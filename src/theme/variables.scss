@@ -1,2 +1,24 @@
-// For information on how to create your own theme, please refer to:
+/*
+ * App Global Theme
+ */
+
+:root {
+
+  /** primary **/
+  --ion-color-primary: #6C63FF;
+  --ion-color-primary-rgb: 108,99,255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+
+  /** secondary **/
+  --ion-color-secondary: #4CAF50;
+  --ion-color-secondary-rgb: 76,175,80;
+  --ion-color-secondary-contrast: #ffffff;
+
+  /** tertiary **/
+  --ion-color-tertiary: #FF9800;
+  --ion-color-tertiary-rgb: 255,152,0;
+  --ion-color-tertiary-contrast: #ffffff;
+
+}// For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
