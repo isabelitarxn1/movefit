@@ -1,0 +1,7 @@
+{
+  "name": "movefit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
