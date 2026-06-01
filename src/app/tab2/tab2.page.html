@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
       Progreso
@@ -6,12 +6,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <h1>Seguimiento de Progreso</h1>
+
+  <p>
+    Consulta tus estadísticas y evolución física.
+  </p>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Estadísticas
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Próximamente podrás visualizar tu progreso semanal y mensual.
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

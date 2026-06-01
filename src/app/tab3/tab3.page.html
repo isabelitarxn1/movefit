@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
       Perfil
@@ -6,12 +6,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <h1>Perfil de Usuario</h1>
+
+  <p>
+    Gestiona tu información personal y objetivos físicos.
+  </p>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Información Personal
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Aquí podrás actualizar tus datos y preferencias.
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
