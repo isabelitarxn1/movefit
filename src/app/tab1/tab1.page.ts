@@ -10,6 +10,8 @@ import {
   IonCardContent
 } from '@ionic/angular/standalone';
 
+import { FitnessCardComponent } from '../components/fitness-card/fitness-card.component';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: './tab1.page.html',
@@ -23,7 +25,8 @@ import {
     IonCard,
     IonCardHeader,
     IonCardTitle,
-    IonCardContent
+    IonCardContent,
+    FitnessCardComponent
   ]
 })
 export class Tab1Page {}
