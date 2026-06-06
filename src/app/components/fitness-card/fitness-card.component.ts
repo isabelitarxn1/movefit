@@ -4,7 +4,8 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardContent
+  IonCardContent,
+  IonIcon
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -16,7 +17,8 @@ import {
     IonCard,
     IonCardHeader,
     IonCardTitle,
-    IonCardContent
+    IonCardContent,
+    IonIcon
   ]
 })
 export class FitnessCardComponent {
