@@ -1,11 +1,7 @@
 import { Component, Input } from '@angular/core';
-
 import {
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonCardContent,
-  IonIcon
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -15,16 +11,10 @@ import {
   standalone: true,
   imports: [
     IonCard,
-    IonCardHeader,
-    IonCardTitle,
     IonCardContent,
-    IonIcon
-  ]
+  ],
 })
 export class FitnessCardComponent {
-
-  @Input() title: string = '';
-
-  @Input() description: string = '';
-
+  @Input() title = '';
+  @Input() subtitle = '';
 }

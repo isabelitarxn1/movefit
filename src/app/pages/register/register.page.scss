@@ -1,0 +1,132 @@
+.register-page {
+  --background: #2c2d29;
+}
+
+.register-container {
+  min-height: 100%;
+  padding: 36px 16px 24px;
+  background: #2c2d29;
+  color: #ffffff;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.register-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.back-button {
+  width: 46px;
+  height: 32px;
+  border: 1px solid #575a55;
+  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button ion-icon {
+  font-size: 20px;
+}
+
+.register-header h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.register-description {
+  margin: 0 0 16px;
+  color: #aaaea6;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.field-group label {
+  margin-bottom: 5px;
+  color: #b8bbb4;
+  font-size: 11px;
+}
+
+.field-group input {
+  width: 100%;
+  height: 35px;
+  padding: 0 12px;
+  border: 1px solid #555852;
+  border-radius: 6px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.field-group input::placeholder {
+  color: #8d9089;
+}
+
+.field-group input:focus {
+  border-color: #00a859;
+}
+
+.row-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.row-fields .field-group {
+  flex: 1;
+}
+
+.register-button {
+  width: 100%;
+  height: 36px;
+  margin-top: 8px;
+  border: 1px solid #777a73;
+  border-radius: 7px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.login-link {
+  margin-top: 12px;
+  text-align: center;
+  color: #00a859;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+@media (min-width: 600px) {
+  .register-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .register-card {
+    max-width: 360px;
+    margin-top: 4px;
+  }
+}
