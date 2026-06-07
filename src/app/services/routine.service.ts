@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { RoutineRepository } from './routine.repository';
 import { parseRoutine } from '../validators/routine.validator';
-import { Routine, RoutineDetail, RoutineInput } from '../models/routine.model';
+import { RoutineDetail, RoutineInput, RoutineSummary } from '../models/routine.model';
 
 /** Resultado de crear o editar una rutina. */
 export interface RoutineResult {
@@ -47,8 +47,8 @@ export class RoutineService {
     return { ok: true, id: routineId };
   }
 
-  /** Lista las rutinas del usuario en sesión. */
-  async listForCurrentUser(): Promise<Routine[]> {
+  /** Lista las rutinas del usuario en sesión (con conteo de ejercicios). */
+  async listForCurrentUser(): Promise<RoutineSummary[]> {
     const userId = this.auth.currentUser()?.id;
     return userId ? this.routines.findByUser(userId) : [];
   }

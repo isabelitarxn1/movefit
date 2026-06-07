@@ -121,6 +121,7 @@ export class DatabaseService {
         userId        INTEGER NOT NULL,
         name          TEXT    NOT NULL,
         days          TEXT    NOT NULL,
+        durationMin   INTEGER NOT NULL,
         createdAt     TEXT    NOT NULL,
         FOREIGN KEY (userId) REFERENCES users(id)
       );
@@ -138,5 +139,32 @@ export class DatabaseService {
       );
     `;
     await this.getConnection().execute(schema);
+    await this.runMigrations();
+  }
+
+  /**
+   * Ajustes incrementales sobre bases que ya existían (cuando una tabla nueva
+   * no basta porque hay que añadir una columna a una tabla previa).
+   */
+  private async runMigrations(): Promise<void> {
+    // durationMin se añadió después; las rutinas antiguas no la tienen.
+    await this.addColumnIfMissing('routines', 'durationMin', 'INTEGER NOT NULL DEFAULT 0');
+  }
+
+  /**
+   * Añade una columna a una tabla solo si aún no existe (idempotente).
+   * SQLite no soporta "ADD COLUMN IF NOT EXISTS", así que lo comprobamos antes.
+   */
+  private async addColumnIfMissing(
+    table: string,
+    column: string,
+    definition: string
+  ): Promise<void> {
+    const db = this.getConnection();
+    const info = await db.query(`PRAGMA table_info(${table})`);
+    const exists = (info.values ?? []).some((c: any) => c.name === column);
+    if (!exists) {
+      await db.execute(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    }
   }
 }

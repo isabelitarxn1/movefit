@@ -5,6 +5,7 @@ import {
   Routine,
   RoutineDetail,
   RoutineExerciseInput,
+  RoutineSummary,
 } from '../models/routine.model';
 import { Exercise } from '../models/exercise.model';
 
@@ -12,6 +13,7 @@ import { Exercise } from '../models/exercise.model';
 export interface NewRoutine {
   name: string;
   days: DayOfWeek[];
+  durationMin: number;
   exercises: RoutineExerciseInput[];
 }
 
@@ -31,8 +33,8 @@ export class RoutineRepository {
     const createdAt = new Date().toISOString();
 
     const res = await db.run(
-      `INSERT INTO routines (userId, name, days, createdAt) VALUES (?, ?, ?, ?)`,
-      [userId, data.name, this.serializeDays(data.days), createdAt]
+      `INSERT INTO routines (userId, name, days, durationMin, createdAt) VALUES (?, ?, ?, ?, ?)`,
+      [userId, data.name, this.serializeDays(data.days), data.durationMin, createdAt]
     );
     const routineId = res.changes?.lastId ?? 0;
 
@@ -47,9 +49,10 @@ export class RoutineRepository {
   async update(routineId: number, data: NewRoutine): Promise<void> {
     const db = this.database.getConnection();
 
-    await db.run(`UPDATE routines SET name = ?, days = ? WHERE id = ?`, [
+    await db.run(`UPDATE routines SET name = ?, days = ?, durationMin = ? WHERE id = ?`, [
       data.name,
       this.serializeDays(data.days),
+      data.durationMin,
       routineId,
     ]);
 
@@ -59,14 +62,24 @@ export class RoutineRepository {
     await this.database.persist();
   }
 
-  /** Lista las rutinas de un usuario, de la más reciente a la más antigua. */
-  async findByUser(userId: number): Promise<Routine[]> {
+  /**
+   * Lista las rutinas de un usuario (con el conteo de ejercicios de cada una),
+   * de la más reciente a la más antigua.
+   */
+  async findByUser(userId: number): Promise<RoutineSummary[]> {
     const db = this.database.getConnection();
     const res = await db.query(
-      'SELECT * FROM routines WHERE userId = ? ORDER BY createdAt DESC',
+      `SELECT r.*,
+              (SELECT COUNT(*) FROM routine_exercises re WHERE re.routineId = r.id) AS exerciseCount
+       FROM routines r
+       WHERE r.userId = ?
+       ORDER BY r.createdAt DESC`,
       [userId]
     );
-    return (res.values ?? []).map((row) => this.toRoutine(row));
+    return (res.values ?? []).map((row) => ({
+      ...this.toRoutine(row),
+      exerciseCount: row.exerciseCount ?? 0,
+    }));
   }
 
   /** Devuelve una rutina con sus ejercicios enlazados al catálogo, o null. */
@@ -133,6 +146,7 @@ export class RoutineRepository {
       userId: row.userId,
       name: row.name,
       days: this.deserializeDays(row.days),
+      durationMin: row.durationMin ?? 0,
       createdAt: row.createdAt,
     };
   }
