@@ -3,11 +3,14 @@ import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } 
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { provideAppInitializer, inject } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { defineCustomElements as defineJeepSqlite } from 'jeep-sqlite/loader';
+// Usamos la salida "custom elements" (no el loader lazy), que es compatible con
+// el build system de Angular (esbuild). El loader lazy de Stencil falla aquí.
+import { defineCustomElement as defineJeepSqlite } from 'jeep-sqlite/dist/components/jeep-sqlite.js';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { DatabaseService } from './app/services/database.service';
+import { ExerciseRepository } from './app/services/exercise.repository';
 
 const bootstrap = () =>
   bootstrapApplication(AppComponent, {
@@ -15,20 +18,25 @@ const bootstrap = () =>
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
       provideIonicAngular(),
       provideRouter(routes, withPreloading(PreloadAllModules)),
-      // Inicializa la base de datos SQLite antes de mostrar la app.
-      provideAppInitializer(() => inject(DatabaseService).initialize()),
+      // Inicializa la base de datos SQLite y siembra el catálogo antes de mostrar la app.
+      provideAppInitializer(() => {
+        const database = inject(DatabaseService);
+        const exercises = inject(ExerciseRepository);
+        return (async () => {
+          await database.initialize();
+          await exercises.seedCatalog();
+        })();
+      }),
     ],
   });
 
-// Registra el web component jeep-sqlite (necesario para SQLite en navegador).
-defineJeepSqlite(window);
+// Registra el web component jeep-sqlite (su elemento ya está en index.html).
+defineJeepSqlite();
 
 if (Capacitor.getPlatform() === 'web') {
-  // En navegador hay que tener el elemento <jeep-sqlite> en el DOM y definido
-  // antes de inicializar el almacén web, así que esperamos a eso para arrancar.
+  // Esperamos a que jeep-sqlite esté definido y haya actualizado su elemento
+  // del DOM antes de arrancar (el APP_INITIALIZER abrirá el almacén web).
   window.addEventListener('DOMContentLoaded', async () => {
-    const jeepEl = document.createElement('jeep-sqlite');
-    document.body.appendChild(jeepEl);
     await customElements.whenDefined('jeep-sqlite');
     bootstrap();
   });
