@@ -53,3 +53,11 @@ export function toPublicUser(user: User): PublicUser {
   const { passwordHash, salt, ...publicUser } = user;
   return publicUser;
 }
+
+/**
+ * Extrae el primer nombre a partir del nombre completo, para saludos y demás.
+ * Ej: "Isabel Madrigal" → "Isabel".
+ */
+export function firstName(fullName: string): string {
+  return fullName.trim().split(/\s+/)[0] ?? '';
+}
