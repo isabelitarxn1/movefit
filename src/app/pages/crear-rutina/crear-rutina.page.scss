@@ -70,28 +70,28 @@
   border-color: #00a859;
 }
 
-/* Selector de días */
+/* Selector de días (círculos de una letra) */
 .day-picker {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .day-chip {
-  flex: 1;
+  width: 38px;
   height: 38px;
   border: 1px solid #555852;
-  border-radius: 8px;
+  border-radius: 50%;
   background: transparent;
   color: #b8bbb4;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .day-chip.active {
   border-color: #00a859;
-  background: rgba(0, 168, 89, 0.15);
-  color: #00a859;
+  background: #00a859;
+  color: #ffffff;
 }
 
 /* Ejercicios */
@@ -139,11 +139,28 @@
 .exercise-row-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 10px;
 }
 
+.exercise-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(0, 168, 89, 0.15);
+}
+
+.exercise-icon ion-icon {
+  font-size: 17px;
+  color: #00a859;
+}
+
 .exercise-name {
+  flex: 1;
   font-size: 14px;
   font-weight: 600;
 }
@@ -264,8 +281,8 @@
 .modal-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
+  gap: 10px;
+  padding: 12px 16px;
   border: none;
   border-radius: 10px;
   background: #1f201e;
@@ -274,6 +291,7 @@
 }
 
 .modal-item-name {
+  flex: 1;
   font-size: 14px;
   font-weight: 600;
 }

@@ -4,6 +4,7 @@ import { NewRoutine } from '../services/routine.repository';
 const SERIES_RANGE = { min: 1, max: 20 };
 const REPS_RANGE = { min: 0, max: 100 };
 const DURATION_RANGE = { min: 0, max: 3600 };
+const ROUTINE_DURATION_RANGE = { min: 10, max: 600 };
 
 /** Resultado de parsear el formulario de rutina. */
 export type RoutineParseResult =
@@ -16,6 +17,7 @@ export type RoutineParseResult =
  * Reglas:
  *  - Nombre obligatorio.
  *  - Al menos un día asignado.
+ *  - Duración estimada obligatoria y dentro de un rango razonable.
  *  - Al menos un ejercicio.
  *  - Cada ejercicio con series/repeticiones/duración dentro de rangos razonables.
  *
@@ -32,6 +34,17 @@ export function parseRoutine(input: RoutineInput): RoutineParseResult {
     return { ok: false, error: 'Selecciona al menos un día para la rutina.' };
   }
 
+  const durationMin = input.durationMin;
+  if (durationMin === null || durationMin === undefined) {
+    return { ok: false, error: 'Indica la duración estimada de la rutina.' };
+  }
+  if (durationMin < ROUTINE_DURATION_RANGE.min || durationMin > ROUTINE_DURATION_RANGE.max) {
+    return {
+      ok: false,
+      error: `La duración debe estar entre ${ROUTINE_DURATION_RANGE.min} y ${ROUTINE_DURATION_RANGE.max} minutos.`,
+    };
+  }
+
   if (input.exercises.length === 0) {
     return { ok: false, error: 'Agrega al menos un ejercicio a la rutina.' };
   }
@@ -45,7 +58,7 @@ export function parseRoutine(input: RoutineInput): RoutineParseResult {
 
   return {
     ok: true,
-    data: { name, days: input.days, exercises: input.exercises },
+    data: { name, days: input.days, durationMin, exercises: input.exercises },
   };
 }
 

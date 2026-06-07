@@ -3,7 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonModal, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { addOutline, closeOutline, trashOutline, arrowBackOutline } from 'ionicons/icons';
+import {
+  addOutline,
+  closeOutline,
+  trashOutline,
+  arrowBackOutline,
+  barbellOutline,
+} from 'ionicons/icons';
 import { ExerciseRepository } from '../../services/exercise.repository';
 import { RoutineService } from '../../services/routine.service';
 import { Exercise } from '../../models/exercise.model';
@@ -42,10 +48,11 @@ export class CrearRutinaPage {
 
   name = '';
   selectedDays: DayOfWeek[] = [];
+  durationMin: number | null = null;
   exercises: SelectedExercise[] = [];
 
   constructor() {
-    addIcons({ addOutline, closeOutline, trashOutline, arrowBackOutline });
+    addIcons({ addOutline, closeOutline, trashOutline, arrowBackOutline, barbellOutline });
   }
 
   /**
@@ -67,6 +74,7 @@ export class CrearRutinaPage {
       if (detail) {
         this.name = detail.name;
         this.selectedDays = [...detail.days];
+        this.durationMin = detail.durationMin;
         this.exercises = detail.exercises.map((e) => ({
           exercise: e.exercise,
           series: e.series,
@@ -81,6 +89,7 @@ export class CrearRutinaPage {
   private resetForm(): void {
     this.name = '';
     this.selectedDays = [];
+    this.durationMin = null;
     this.exercises = [];
     this.routineId = null;
     this.isEdit.set(false);
@@ -125,6 +134,7 @@ export class CrearRutinaPage {
     const input: RoutineInput = {
       name: this.name,
       days: this.selectedDays,
+      durationMin: this.durationMin,
       exercises: this.exercises.map((e) => ({
         exerciseId: e.exercise.id,
         series: e.series,

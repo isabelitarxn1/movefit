@@ -4,7 +4,11 @@ import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline, trashOutline, barbellOutline } from 'ionicons/icons';
 import { RoutineService } from '../../services/routine.service';
-import { Routine, DayOfWeek, DAYS_OF_WEEK } from '../../models/routine.model';
+import {
+  RoutineSummary,
+  DayOfWeek,
+  DAYS_OF_WEEK,
+} from '../../models/routine.model';
 
 @Component({
   selector: 'app-rutinas',
@@ -16,8 +20,8 @@ import { Routine, DayOfWeek, DAYS_OF_WEEK } from '../../models/routine.model';
 export class RutinasPage {
   private readonly routineService = inject(RoutineService);
 
-  /** Rutinas del usuario en sesión. */
-  readonly routines = signal<Routine[]>([]);
+  /** Rutinas del usuario en sesión (con conteo de ejercicios). */
+  readonly routines = signal<RoutineSummary[]>([]);
 
   constructor() {
     addIcons({ addOutline, trashOutline, barbellOutline });
@@ -28,14 +32,12 @@ export class RutinasPage {
     await this.load();
   }
 
-  /** Convierte los códigos de días en etiquetas legibles (ej: "Lun · Mié"). */
-  formatDays(days: DayOfWeek[]): string {
-    return DAYS_OF_WEEK.filter((d) => days.includes(d.code))
-      .map((d) => d.label)
-      .join(' · ');
+  /** Etiqueta de 3 letras de un día (ej: "lun" → "Lun"). */
+  dayLabel(code: DayOfWeek): string {
+    return DAYS_OF_WEEK.find((d) => d.code === code)?.label ?? code;
   }
 
-  async remove(routine: Routine): Promise<void> {
+  async remove(routine: RoutineSummary): Promise<void> {
     const confirmed = confirm(`¿Eliminar la rutina "${routine.name}"?`);
     if (!confirmed) {
       return;

@@ -3,10 +3,9 @@
 
     <header class="rutinas-header">
       <h1>Mis Rutinas</h1>
-      <a class="create-button" routerLink="/tabs/crear-rutina">
-        <ion-icon name="add-outline"></ion-icon>
-        Crear
-      </a>
+      @if (routines().length > 0) {
+        <span class="routine-count">{{ routines().length }} rutinas</span>
+      }
     </header>
 
     <div class="routine-list">
@@ -14,7 +13,14 @@
         <article class="routine-card">
           <a class="routine-main" [routerLink]="['/tabs/crear-rutina', routine.id]">
             <span class="routine-name">{{ routine.name }}</span>
-            <span class="routine-days">{{ formatDays(routine.days) }}</span>
+            <span class="routine-meta">
+              {{ routine.exerciseCount }} ejercicios · {{ routine.durationMin }} min
+            </span>
+            <span class="routine-days">
+              @for (day of routine.days; track day) {
+                <span class="day-badge">{{ dayLabel(day) }}</span>
+              }
+            </span>
           </a>
           <button class="routine-delete" type="button" aria-label="Eliminar" (click)="remove(routine)">
             <ion-icon name="trash-outline"></ion-icon>
@@ -31,4 +37,9 @@
     <a class="catalogo-link" routerLink="/tabs/catalogo">Ver catálogo de ejercicios</a>
 
   </main>
+
+  <!-- Botón flotante para crear rutina -->
+  <a class="fab-create" routerLink="/tabs/crear-rutina" aria-label="Crear rutina">
+    <ion-icon name="add-outline"></ion-icon>
+  </a>
 </ion-content>
