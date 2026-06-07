@@ -3,10 +3,6 @@
     <section class="login-card">
 
       <div class="login-header">
-        <button class="back-button" type="button" aria-label="Volver">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-
         <h1>Iniciar sesión</h1>
       </div>
 
@@ -21,7 +17,6 @@
             id="email"
             type="email"
             placeholder="isabel@correo.com"
-            autocomplete="email"
           />
         </div>
 
@@ -31,19 +26,14 @@
             id="password"
             type="password"
             placeholder="••••••••"
-            autocomplete="current-password"
           />
         </div>
-
-        <a class="forgot-password" href="#">
-          ¿Olvidaste tu contraseña?
-        </a>
 
         <button class="login-button" type="submit">
           Ingresar
         </button>
 
-        <a class="register-link" href="#">
+        <a class="register-link" routerLink="/register">
           ¿No tienes cuenta? Regístrate
         </a>
       </form>
