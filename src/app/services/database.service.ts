@@ -102,8 +102,8 @@ export class DatabaseService {
         email         TEXT    NOT NULL UNIQUE,
         passwordHash  TEXT    NOT NULL,
         salt          TEXT    NOT NULL,
-        weightKg      REAL,
-        heightCm      REAL,
+        weightKg      REAL    NOT NULL,
+        heightCm      REAL    NOT NULL,
         createdAt     TEXT    NOT NULL
       );
     `;
