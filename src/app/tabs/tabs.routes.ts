@@ -7,23 +7,35 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'home',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../pages/home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'tab2',
+        path: 'rutinas',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../pages/rutinas/rutinas.page').then((m) => m.RutinasPage),
       },
       {
-        path: 'tab3',
+        path: 'progreso',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../pages/progreso/progreso.page').then((m) => m.ProgresoPage),
+      },
+      {
+        path: 'perfil',
+        loadComponent: () =>
+          import('../pages/perfil/perfil.page').then((m) => m.PerfilPage),
+      },
+      {
+        path: 'configuracion',
+        loadComponent: () =>
+          import('../pages/configuracion/configuracion.page').then(
+            (m) => m.ConfiguracionPage
+          ),
       },
       {
         path: '',
-        redirectTo: 'tab1',
+        redirectTo: 'home',
         pathMatch: 'full',
       },
     ],
