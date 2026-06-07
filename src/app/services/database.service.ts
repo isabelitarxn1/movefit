@@ -56,6 +56,22 @@ export class DatabaseService {
   }
 
   /**
+   * Persiste los cambios al almacén permanente.
+   *
+   * En navegador, jeep-sqlite mantiene la base de datos en memoria y solo la
+   * vuelca a IndexedDB cuando se llama a saveToStore; sin esto, los datos se
+   * pierden al recargar la página. En dispositivo nativo no hace falta (SQLite
+   * escribe directo al archivo), así que es un no-op.
+   *
+   * Debe llamarse después de cada operación de escritura (INSERT/UPDATE/DELETE).
+   */
+  async persist(): Promise<void> {
+    if (Capacitor.getPlatform() === 'web') {
+      await this.sqlite.saveToStore(DatabaseService.DB_NAME);
+    }
+  }
+
+  /**
    * Crea o recupera la conexión, manejando el caso en que ya exista.
    */
   private async openConnection(): Promise<SQLiteDBConnection> {
