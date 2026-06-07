@@ -16,28 +16,8 @@
 }
 
 .login-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin-bottom: 18px;
-}
-
-.back-button {
-  width: 46px;
-  height: 32px;
-  border: 1px solid #575a55;
-  border-radius: 8px;
-  background: transparent;
-  color: #ffffff;
-  font-size: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-button ion-icon {
-  font-size: 20px;
+  text-align: center;
 }
 
 .login-header h1 {
@@ -88,14 +68,6 @@
 
 .field-group input:focus {
   border-color: #00a859;
-}
-
-.forgot-password {
-  align-self: flex-end;
-  margin-bottom: 14px;
-  color: #00a859;
-  font-size: 11px;
-  text-decoration: none;
 }
 
 .login-button {
