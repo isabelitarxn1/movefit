@@ -28,11 +28,23 @@
             class="day-chip"
             [class.active]="isDaySelected(day.code)"
             (click)="toggleDay(day.code)"
+            [attr.aria-label]="day.label"
           >
-            {{ day.label }}
+            {{ day.short }}
           </button>
         }
       </div>
+    </div>
+
+    <div class="field-group">
+      <label for="duration">Duración estimada (min)</label>
+      <input
+        id="duration"
+        name="duration"
+        type="number"
+        placeholder="45"
+        [(ngModel)]="durationMin"
+      />
     </div>
 
     <section class="exercises-section">
@@ -47,6 +59,9 @@
       @for (item of exercises; track $index; let i = $index) {
         <article class="exercise-row">
           <div class="exercise-row-top">
+            <span class="exercise-icon">
+              <ion-icon name="barbell-outline"></ion-icon>
+            </span>
             <span class="exercise-name">{{ item.exercise.name }}</span>
             <button class="remove-button" type="button" aria-label="Quitar" (click)="removeExercise(i)">
               <ion-icon name="trash-outline"></ion-icon>
@@ -97,6 +112,9 @@
           <div class="modal-list">
             @for (ex of catalog(); track ex.id) {
               <button class="modal-item" type="button" (click)="addExercise(ex)">
+                <span class="exercise-icon">
+                  <ion-icon name="barbell-outline"></ion-icon>
+                </span>
                 <span class="modal-item-name">{{ ex.name }}</span>
                 <span class="modal-item-cat">{{ ex.category }}</span>
               </button>
