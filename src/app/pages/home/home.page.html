@@ -1,0 +1,38 @@
+<ion-content class="home-page">
+  <main class="home-container">
+
+    <header class="home-header">
+      <p class="greeting">Hola, {{ userName }} 👋</p>
+      <h1>¿Listo para entrenar hoy?</h1>
+    </header>
+
+    <!-- Resumen del día / próxima rutina (RF06, RF07) -->
+    <section class="today-card">
+      <div class="today-icon">
+        <ion-icon name="flame-outline"></ion-icon>
+      </div>
+      <div class="today-text">
+        <p class="today-label">Entrenamiento de hoy</p>
+        <p class="today-value">Aún no has registrado actividad</p>
+      </div>
+    </section>
+
+    <!-- Accesos rápidos a las secciones principales (RF09) -->
+    <section class="quick-section">
+      <h2>Accesos rápidos</h2>
+
+      <div class="quick-grid">
+        @for (action of quickActions; track action.route) {
+          <a class="quick-card" [routerLink]="action.route">
+            <ion-icon class="quick-card-icon" [name]="action.icon"></ion-icon>
+            <span class="quick-card-label">{{ action.label }}</span>
+            <span class="quick-card-subtitle">{{ action.subtitle }}</span>
+          </a>
+        } @empty {
+          <p class="quick-empty">Configura tus accesos rápidos para empezar.</p>
+        }
+      </div>
+    </section>
+
+  </main>
+</ion-content>
