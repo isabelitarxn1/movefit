@@ -17,6 +17,25 @@ export const routes: Routes = [
           import('../pages/rutinas/rutinas.page').then((m) => m.RutinasPage),
       },
       {
+        path: 'catalogo',
+        loadComponent: () =>
+          import('../pages/catalogo/catalogo.page').then((m) => m.CatalogoPage),
+      },
+      {
+        path: 'crear-rutina',
+        loadComponent: () =>
+          import('../pages/crear-rutina/crear-rutina.page').then(
+            (m) => m.CrearRutinaPage
+          ),
+      },
+      {
+        path: 'crear-rutina/:id',
+        loadComponent: () =>
+          import('../pages/crear-rutina/crear-rutina.page').then(
+            (m) => m.CrearRutinaPage
+          ),
+      },
+      {
         path: 'progreso',
         loadComponent: () =>
           import('../pages/progreso/progreso.page').then((m) => m.ProgresoPage),

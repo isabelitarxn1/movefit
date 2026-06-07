@@ -1,0 +1,109 @@
+<ion-content class="crear-page">
+  <main class="crear-container">
+
+    <header class="crear-header">
+      <button class="back-button" type="button" aria-label="Volver" routerLink="/tabs/rutinas">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+      <h1>{{ isEdit() ? 'Editar rutina' : 'Nueva rutina' }}</h1>
+    </header>
+
+    <div class="field-group">
+      <label for="name">Nombre de la rutina</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Pierna y glúteo"
+        [(ngModel)]="name"
+      />
+    </div>
+
+    <div class="field-group">
+      <label>Días de la semana</label>
+      <div class="day-picker">
+        @for (day of days; track day.code) {
+          <button
+            type="button"
+            class="day-chip"
+            [class.active]="isDaySelected(day.code)"
+            (click)="toggleDay(day.code)"
+          >
+            {{ day.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <section class="exercises-section">
+      <div class="exercises-head">
+        <label>Ejercicios</label>
+        <button class="add-button" type="button" (click)="openCatalog()">
+          <ion-icon name="add-outline"></ion-icon>
+          Añadir
+        </button>
+      </div>
+
+      @for (item of exercises; track $index; let i = $index) {
+        <article class="exercise-row">
+          <div class="exercise-row-top">
+            <span class="exercise-name">{{ item.exercise.name }}</span>
+            <button class="remove-button" type="button" aria-label="Quitar" (click)="removeExercise(i)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
+          <div class="exercise-params">
+            <div class="param">
+              <label [for]="'series' + i">Series</label>
+              <input [id]="'series' + i" type="number" [name]="'series' + i" [(ngModel)]="item.series" />
+            </div>
+            <div class="param">
+              <label [for]="'reps' + i">Reps</label>
+              <input [id]="'reps' + i" type="number" [name]="'reps' + i" [(ngModel)]="item.reps" />
+            </div>
+            <div class="param">
+              <label [for]="'dur' + i">Seg</label>
+              <input [id]="'dur' + i" type="number" [name]="'dur' + i" [(ngModel)]="item.durationSec" />
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <p class="exercises-empty">Aún no has añadido ejercicios.</p>
+      }
+    </section>
+
+    @if (error()) {
+      <p class="form-error">{{ error() }}</p>
+    }
+
+    <button class="save-button" type="button" [disabled]="saving()" (click)="save()">
+      {{ saving() ? 'Guardando…' : (isEdit() ? 'Guardar cambios' : 'Guardar rutina') }}
+    </button>
+
+  </main>
+
+  <!-- Modal selector del catálogo -->
+  <ion-modal [isOpen]="modalOpen()" (didDismiss)="closeCatalog()">
+    <ng-template>
+      <ion-content class="modal-content">
+        <div class="modal-inner">
+          <div class="modal-header">
+            <h2>Elige un ejercicio</h2>
+            <button class="modal-close" type="button" aria-label="Cerrar" (click)="closeCatalog()">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <div class="modal-list">
+            @for (ex of catalog(); track ex.id) {
+              <button class="modal-item" type="button" (click)="addExercise(ex)">
+                <span class="modal-item-name">{{ ex.name }}</span>
+                <span class="modal-item-cat">{{ ex.category }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

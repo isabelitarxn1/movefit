@@ -1,6 +1,34 @@
-<ion-content class="placeholder-page">
-  <main class="placeholder-container">
-    <h1>Mis Rutinas</h1>
-    <p>Aquí podrás crear y gestionar tus rutinas de ejercicio. Próximamente.</p>
+<ion-content class="rutinas-page">
+  <main class="rutinas-container">
+
+    <header class="rutinas-header">
+      <h1>Mis Rutinas</h1>
+      <a class="create-button" routerLink="/tabs/crear-rutina">
+        <ion-icon name="add-outline"></ion-icon>
+        Crear
+      </a>
+    </header>
+
+    <div class="routine-list">
+      @for (routine of routines(); track routine.id) {
+        <article class="routine-card">
+          <a class="routine-main" [routerLink]="['/tabs/crear-rutina', routine.id]">
+            <span class="routine-name">{{ routine.name }}</span>
+            <span class="routine-days">{{ formatDays(routine.days) }}</span>
+          </a>
+          <button class="routine-delete" type="button" aria-label="Eliminar" (click)="remove(routine)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </article>
+      } @empty {
+        <div class="routine-empty">
+          <ion-icon name="barbell-outline"></ion-icon>
+          <p>Aún no tienes rutinas. Crea la primera.</p>
+        </div>
+      }
+    </div>
+
+    <a class="catalogo-link" routerLink="/tabs/catalogo">Ver catálogo de ejercicios</a>
+
   </main>
 </ion-content>

@@ -92,7 +92,8 @@ export class DatabaseService {
   }
 
   /**
-   * Define las tablas de la aplicación. Usa IF NOT EXISTS para ser idempotente.
+   * Define las tablas de la aplicación. Usa IF NOT EXISTS para ser idempotente:
+   * tablas nuevas se crean también sobre una base ya existente.
    */
   private async createSchema(): Promise<void> {
     const schema = `
@@ -105,6 +106,35 @@ export class DatabaseService {
         weightKg      REAL    NOT NULL,
         heightCm      REAL    NOT NULL,
         createdAt     TEXT    NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS exercises (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        name          TEXT    NOT NULL,
+        description   TEXT    NOT NULL,
+        instructions  TEXT    NOT NULL,
+        category      TEXT    NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS routines (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId        INTEGER NOT NULL,
+        name          TEXT    NOT NULL,
+        days          TEXT    NOT NULL,
+        createdAt     TEXT    NOT NULL,
+        FOREIGN KEY (userId) REFERENCES users(id)
+      );
+
+      CREATE TABLE IF NOT EXISTS routine_exercises (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        routineId     INTEGER NOT NULL,
+        exerciseId    INTEGER NOT NULL,
+        series        INTEGER NOT NULL,
+        reps          INTEGER NOT NULL,
+        durationSec   INTEGER NOT NULL,
+        position      INTEGER NOT NULL,
+        FOREIGN KEY (routineId) REFERENCES routines(id) ON DELETE CASCADE,
+        FOREIGN KEY (exerciseId) REFERENCES exercises(id)
       );
     `;
     await this.getConnection().execute(schema);
