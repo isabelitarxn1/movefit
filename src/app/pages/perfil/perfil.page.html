@@ -1,6 +1,27 @@
-<ion-content class="placeholder-page">
-  <main class="placeholder-container">
-    <h1>Perfil</h1>
-    <p>Aquí podrás consultar y editar tus datos personales. Próximamente.</p>
+<ion-content class="perfil-page">
+  <main class="perfil-container">
+
+    <header class="perfil-header">
+      <ion-icon class="avatar" name="person-circle-outline"></ion-icon>
+      <h1>{{ user()?.fullName }}</h1>
+      <p class="email">{{ user()?.email }}</p>
+    </header>
+
+    <section class="perfil-data">
+      <div class="data-item">
+        <span class="data-label">Peso</span>
+        <span class="data-value">{{ user()?.weightKg ?? '—' }} kg</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Altura</span>
+        <span class="data-value">{{ user()?.heightCm ?? '—' }} cm</span>
+      </div>
+    </section>
+
+    <button class="logout-button" type="button" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      Cerrar sesión
+    </button>
+
   </main>
 </ion-content>
