@@ -5,7 +5,24 @@ const WEIGHT_RANGE_KG = { min: 20, max: 300 };
 const HEIGHT_RANGE_CM = { min: 50, max: 250 };
 
 /**
- * Valida los datos del formulario de registro.
+ * Datos del registro ya validados y normalizados (nombre recortado, correo en
+ * minúsculas, peso/altura como number garantizado). Listos para guardar.
+ */
+export interface ValidRegisterData {
+  fullName: string;
+  email: string;
+  password: string;
+  weightKg: number;
+  heightCm: number;
+}
+
+/** Resultado de parsear el formulario de registro. */
+export type RegisterResult =
+  | { ok: true; data: ValidRegisterData }
+  | { ok: false; error: string };
+
+/**
+ * Valida y normaliza los datos del formulario de registro.
  *
  * Reglas:
  *  - Nombre obligatorio.
@@ -13,37 +30,44 @@ const HEIGHT_RANGE_CM = { min: 50, max: 250 };
  *  - Peso y altura obligatorios, numéricos y dentro de un rango razonable.
  *  - El formato del correo se delega al input type="email".
  *
- * @param input Datos crudos del formulario de registro.
- * @returns Mensaje de error a mostrar, o null si los datos son válidos.
+ * @param input Datos crudos del formulario.
+ * @returns Los datos validados, o un mensaje de error a mostrar.
  */
-export function validateRegister(input: RegisterInput): string | null {
+export function parseRegister(input: RegisterInput): RegisterResult {
   if (!input.fullName?.trim()) {
-    return 'El nombre es obligatorio.';
+    return { ok: false, error: 'El nombre es obligatorio.' };
   }
 
   const passwordError = validatePassword(input.password);
   if (passwordError) {
-    return passwordError;
+    return { ok: false, error: passwordError };
   }
 
-  const weightError = validateNumericRange(input.weightKg, WEIGHT_RANGE_KG, 'El peso', 'kg');
-  if (weightError) {
-    return weightError;
+  const weight = parseNumericRange(input.weightKg, WEIGHT_RANGE_KG, 'El peso', 'kg');
+  if (!weight.ok) {
+    return { ok: false, error: weight.error };
   }
 
-  const heightError = validateNumericRange(input.heightCm, HEIGHT_RANGE_CM, 'La altura', 'cm');
-  if (heightError) {
-    return heightError;
+  const height = parseNumericRange(input.heightCm, HEIGHT_RANGE_CM, 'La altura', 'cm');
+  if (!height.ok) {
+    return { ok: false, error: height.error };
   }
 
-  return null;
+  return {
+    ok: true,
+    data: {
+      fullName: input.fullName.trim(),
+      email: input.email.trim().toLowerCase(),
+      password: input.password,
+      weightKg: weight.value,
+      heightCm: height.value,
+    },
+  };
 }
 
 /**
  * Valida la contraseña: longitud mínima y fortaleza.
- *
- * @param password Contraseña ingresada.
- * @returns Mensaje de error a mostrar, o null si es válida.
+ * @returns Mensaje de error, o null si es válida.
  */
 function validatePassword(password: string): string | null {
   if (password.length < MIN_PASSWORD_LENGTH) {
@@ -60,28 +84,32 @@ function validatePassword(password: string): string | null {
   return null;
 }
 
+/** Resultado de parsear un valor numérico: el number validado o un error. */
+type NumericResult = { ok: true; value: number } | { ok: false; error: string };
+
 /**
- * Valida un valor numérico obligatorio dentro de un rango específico.
+ * Valida un valor numérico obligatorio dentro de un rango y, si es válido,
+ * lo devuelve ya tipado como `number` (eso es lo que elimina los `!` aguas arriba).
  *
  * @param value Valor ingresado, o null/undefined si se omitió.
  * @param range Rango aceptable { min, max }.
  * @param label Nombre con artículo para el mensaje (ej: "El peso", "La altura").
  * @param unit  Unidad para el mensaje (ej: "kg", "cm").
  */
-function validateNumericRange(
+function parseNumericRange(
   value: number | null | undefined,
   range: { min: number; max: number },
   label: string,
   unit: string
-): string | null {
+): NumericResult {
   if (value === null || value === undefined) {
-    return `${label} es un dato obligatorio.`;
+    return { ok: false, error: `${label} es un dato obligatorio.` };
   }
   if (!Number.isFinite(value)) {
-    return `${label} debe ser un valor numérico.`;
+    return { ok: false, error: `${label} debe ser un valor numérico.` };
   }
   if (value < range.min || value > range.max) {
-    return `${label} debe estar entre ${range.min} y ${range.max} ${unit}.`;
+    return { ok: false, error: `${label} debe estar entre ${range.min} y ${range.max} ${unit}.` };
   }
-  return null;
+  return { ok: true, value };
 }
