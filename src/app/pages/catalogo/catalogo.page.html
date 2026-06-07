@@ -1,0 +1,25 @@
+<ion-content class="catalogo-page">
+  <main class="catalogo-container">
+
+    <header class="catalogo-header">
+      <h1>Catálogo de ejercicios</h1>
+      <p>Consulta los ejercicios disponibles y cómo ejecutarlos.</p>
+    </header>
+
+    <section class="exercise-list">
+      @for (exercise of exercises(); track exercise.id) {
+        <article class="exercise-card">
+          <div class="exercise-top">
+            <h2>{{ exercise.name }}</h2>
+            <span class="category-badge">{{ exercise.category }}</span>
+          </div>
+          <p class="exercise-description">{{ exercise.description }}</p>
+          <p class="exercise-instructions">{{ exercise.instructions }}</p>
+        </article>
+      } @empty {
+        <p class="catalogo-empty">No hay ejercicios en el catálogo.</p>
+      }
+    </section>
+
+  </main>
+</ion-content>
