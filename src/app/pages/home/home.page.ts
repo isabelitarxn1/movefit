@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { AuthService } from '../../services/auth.service';
+import { firstName } from '../../models/user.model';
 import { addIcons } from 'ionicons';
 import {
   barbellOutline,
@@ -36,35 +38,37 @@ interface QuickAction {
   imports: [IonContent, IonIcon, RouterLink],
 })
 export class HomePage {
-  /**
-   * Nombre del usuario para el saludo.
-   * TODO: más adelante vendrá del servicio de autenticación / SQLite (RF02).
-   */
-  userName = 'Isabel';
+  private readonly auth = inject(AuthService);
+
+
+  readonly userName = computed(() => {
+    const user = this.auth.currentUser();
+    return user ? firstName(user.fullName) : '';
+  });
 
   quickActions: QuickAction[] = [
     {
       label: 'Mi Progreso',
       subtitle: 'Revisa tu historial y estadísticas',
-      icon: 'statsChartOutline',
+      icon: 'stats-chart-outline',
       route: '/tabs/progreso',
     },
     {
       label: 'Mis Rutinas',
       subtitle: 'Crea y edita tus entrenamientos',
-      icon: 'barbellOutline',
+      icon: 'barbell-outline',
       route: '/tabs/rutinas',
     },
     {
       label: 'Perfil',
       subtitle: 'Tus datos y objetivos físicos',
-      icon: 'personOutline',
+      icon: 'person-outline',
       route: '/tabs/perfil',
     },
     {
       label: 'Ajustes',
       subtitle: 'Recordatorios y notificaciones',
-      icon: 'settingsOutline',
+      icon: 'settings-outline',
       route: '/tabs/configuracion',
     },
   ];

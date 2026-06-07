@@ -10,13 +10,15 @@
         Ingresa para acceder a tus rutinas y progreso
       </p>
 
-      <form class="login-form">
+      <form class="login-form" (ngSubmit)="onSubmit()">
         <div class="field-group">
           <label for="email">Correo electrónico</label>
           <input
             id="email"
+            name="email"
             type="email"
             placeholder="isabel@correo.com"
+            [(ngModel)]="email"
           />
         </div>
 
@@ -24,13 +26,19 @@
           <label for="password">Contraseña</label>
           <input
             id="password"
+            name="password"
             type="password"
             placeholder="••••••••"
+            [(ngModel)]="password"
           />
         </div>
 
-        <button class="login-button" type="button" routerLink="/tabs/home">
-          Ingresar
+        @if (error()) {
+          <p class="form-error">{{ error() }}</p>
+        }
+
+        <button class="login-button" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Ingresando…' : 'Ingresar' }}
         </button>
 
         <a class="register-link" routerLink="/register">
