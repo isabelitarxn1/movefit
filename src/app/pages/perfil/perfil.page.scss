@@ -81,3 +81,195 @@
 .logout-button ion-icon {
   font-size: 18px;
 }
+
+/* Nuevos estilos para la edición de perfil (RF02) */
+.edit-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 38px;
+  margin-bottom: 24px;
+  border: 1px solid #00a859;
+  border-radius: 8px;
+  background: transparent;
+  color: #00a859;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-toggle-button ion-icon {
+  font-size: 16px;
+}
+
+.perfil-stats {
+  margin-bottom: 28px;
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #aaaea6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #1f201e;
+}
+
+.stat-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(0, 168, 89, 0.15);
+  color: #00a859;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-title {
+  color: #aaaea6;
+  font-size: 11px;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Estilos de formulario de edición */
+.perfil-edit-form {
+  display: flex;
+  flex-direction: column;
+  background: #1f201e;
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: 1px solid #2c2d29;
+    padding-bottom: 10px;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  label {
+    margin-bottom: 5px;
+    color: #aaaea6;
+    font-size: 11px;
+  }
+
+  label .required {
+    color: #00a859;
+  }
+
+  input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #555852;
+    border-radius: 6px;
+    background: #2c2d29;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #00a859;
+    }
+  }
+}
+
+.row-fields {
+  display: flex;
+  gap: 12px;
+
+  .field-group {
+    flex: 1;
+  }
+}
+
+.form-error {
+  margin: 0 0 12px;
+  color: #ff6b6b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+
+  button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    ion-icon {
+      font-size: 16px;
+    }
+  }
+
+  .save-button {
+    background: #00a859;
+    color: #ffffff;
+    border: none;
+  }
+
+  .cancel-button {
+    background: transparent;
+    border: 1px solid #555852;
+    color: #ffffff;
+  }
+}
+

@@ -60,4 +60,17 @@ export class UserRepository {
     const res = await db.query('SELECT id FROM users WHERE email = ? LIMIT 1', [email]);
     return (res.values?.length ?? 0) > 0;
   }
+
+  /**
+   * Actualiza los datos del perfil de un usuario y persiste los cambios.
+   */
+  async updateProfile(id: number, fullName: string, weightKg: number, heightCm: number): Promise<void> {
+    const db = this.database.getConnection();
+    await db.run(
+      `UPDATE users SET fullName = ?, weightKg = ?, heightCm = ? WHERE id = ?`,
+      [fullName, weightKg, heightCm, id]
+    );
+    await this.database.persist();
+  }
 }
+
