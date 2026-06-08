@@ -7,21 +7,118 @@
       <p class="email">{{ user()?.email }}</p>
     </header>
 
-    <section class="perfil-data">
-      <div class="data-item">
-        <span class="data-label">Peso</span>
-        <span class="data-value">{{ user()?.weightKg ?? '—' }} kg</span>
-      </div>
-      <div class="data-item">
-        <span class="data-label">Altura</span>
-        <span class="data-value">{{ user()?.heightCm ?? '—' }} cm</span>
-      </div>
-    </section>
+    @if (!isEditing()) {
+      <button class="edit-toggle-button" type="button" (click)="toggleEdit()">
+        <ion-icon name="create-outline"></ion-icon>
+        Editar perfil
+      </button>
 
-    <button class="logout-button" type="button" (click)="logout()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      Cerrar sesión
-    </button>
+      <section class="perfil-data">
+        <div class="data-item">
+          <span class="data-label">Peso</span>
+          <span class="data-value">{{ user()?.weightKg ?? '—' }} kg</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Altura</span>
+          <span class="data-value">{{ user()?.heightCm ?? '—' }} cm</span>
+        </div>
+        @if (imc()) {
+          <div class="data-item">
+            <span class="data-label">IMC ({{ imcCategory() }})</span>
+            <span class="data-value">{{ imc() }}</span>
+          </div>
+        }
+      </section>
+
+      <!-- Nueva sección para estadísticas y entrenamiento (RF02) -->
+      <section class="perfil-stats">
+        <h2>Datos de Entrenamiento</h2>
+        <div class="stats-list">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <ion-icon name="barbell-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Rutinas creadas</span>
+              <span class="stat-value">{{ routineCount() }}</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Miembro desde</span>
+              <span class="stat-value">{{ memberSince() }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <button class="logout-button" type="button" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Cerrar sesión
+      </button>
+    } @else {
+      <!-- Formulario para editar el perfil -->
+      <form class="perfil-edit-form" (ngSubmit)="saveProfile()">
+        <h2>Editar perfil</h2>
+        
+        <div class="field-group">
+          <label for="editFullName">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+          <input
+            id="editFullName"
+            name="editFullName"
+            type="text"
+            placeholder="Ej: Isabel Madrigal"
+            [(ngModel)]="editFullName"
+            required
+          />
+        </div>
+
+        <div class="row-fields">
+          <div class="field-group">
+            <label for="editWeight">Peso (kg) <span class="required" aria-hidden="true">*</span></label>
+            <input
+              id="editWeight"
+              name="editWeight"
+              type="number"
+              placeholder="Ej: 58"
+              [(ngModel)]="editWeightKg"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="editHeight">Altura (cm) <span class="required" aria-hidden="true">*</span></label>
+            <input
+              id="editHeight"
+              name="editHeight"
+              type="number"
+              placeholder="Ej: 163"
+              [(ngModel)]="editHeightCm"
+              required
+            />
+          </div>
+        </div>
+
+        @if (error()) {
+          <p class="form-error">{{ error() }}</p>
+        }
+
+        <div class="form-actions">
+          <button class="save-button" type="submit" [disabled]="loading()">
+            <ion-icon name="save-outline"></ion-icon>
+            {{ loading() ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button class="cancel-button" type="button" (click)="cancelEdit()" [disabled]="loading()">
+            <ion-icon name="close-outline"></ion-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    }
 
   </main>
 </ion-content>
+

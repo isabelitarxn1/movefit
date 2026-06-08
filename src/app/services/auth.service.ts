@@ -118,4 +118,48 @@ export class AuthService {
     }
   }
 
+  /**
+   * Actualiza los datos de perfil del usuario actual, validando los valores.
+   */
+  async updateProfile(fullName: string, weightKg: number, heightCm: number): Promise<AuthResult> {
+    const current = this._currentUser();
+    if (!current) {
+      return { ok: false, error: 'No hay una sesión activa.' };
+    }
+
+    if (!fullName || !fullName.trim()) {
+      return { ok: false, error: 'El nombre es obligatorio.' };
+    }
+
+    if (weightKg === null || weightKg === undefined || isNaN(weightKg)) {
+      return { ok: false, error: 'El peso es un dato obligatorio y debe ser numérico.' };
+    }
+    if (weightKg < 20 || weightKg > 300) {
+      return { ok: false, error: 'El peso debe estar entre 20 y 300 kg.' };
+    }
+
+    if (heightCm === null || heightCm === undefined || isNaN(heightCm)) {
+      return { ok: false, error: 'La altura es un dato obligatorio y debe ser numérico.' };
+    }
+    if (heightCm < 50 || heightCm > 250) {
+      return { ok: false, error: 'La altura debe estar entre 50 y 250 cm.' };
+    }
+
+    try {
+      await this.users.updateProfile(current.id, fullName.trim(), weightKg, heightCm);
+
+      const updatedUser: PublicUser = {
+        ...current,
+        fullName: fullName.trim(),
+        weightKg,
+        heightCm,
+      };
+
+      this.startSession(updatedUser);
+      return { ok: true, user: updatedUser };
+    } catch (e: any) {
+      return { ok: false, error: e.message || 'Error al actualizar el perfil.' };
+    }
+  }
 }
+
