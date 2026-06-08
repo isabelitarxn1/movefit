@@ -137,8 +137,19 @@ export class DatabaseService {
         FOREIGN KEY (routineId) REFERENCES routines(id) ON DELETE CASCADE,
         FOREIGN KEY (exerciseId) REFERENCES exercises(id)
       );
+
+      CREATE TABLE IF NOT EXISTS workout_logs (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId        INTEGER NOT NULL,
+        routineId     INTEGER,
+        routineName   TEXT    NOT NULL,
+        durationMin   INTEGER NOT NULL,
+        loggedAt      TEXT    NOT NULL,
+        FOREIGN KEY (userId) REFERENCES users(id)
+      );
     `;
     await this.getConnection().execute(schema);
+
     await this.runMigrations();
   }
 
