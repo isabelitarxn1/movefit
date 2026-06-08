@@ -1,6 +1,146 @@
-<ion-content class="placeholder-page">
-  <main class="placeholder-container">
-    <h1>Mi Progreso</h1>
-    <p>Aquí verás tu historial de entrenamientos y estadísticas. Próximamente.</p>
+<ion-content class="progreso-page">
+  <main class="progreso-container">
+
+    <header class="progreso-header">
+      <h1>Mi Progreso</h1>
+      <p class="progreso-subtitle">Monitorea tus entrenamientos y estadísticas de actividad física</p>
+    </header>
+
+    <!-- Panel de Estadísticas (RF07) -->
+    <section class="stats-dashboard">
+      <div class="stat-box">
+        <span class="stat-lbl">Sesiones</span>
+        <span class="stat-val">{{ totalWorkouts() }}</span>
+        <span class="stat-desc">Entrenamientos</span>
+      </div>
+
+      <div class="stat-box">
+        <span class="stat-lbl">Tiempo</span>
+        <span class="stat-val">{{ totalTime() }} <small>min</small></span>
+        <span class="stat-desc">Tiempo total</span>
+      </div>
+
+      <div class="stat-box favorite">
+        <span class="stat-lbl">Rutina Favorita</span>
+        <span class="stat-val-text">{{ favoriteRoutine() }}</span>
+        <span class="stat-desc">Más entrenada</span>
+      </div>
+    </section>
+
+    <!-- Botón para Registrar Entrenamiento (RF06) -->
+    @if (!isLogging()) {
+      <button class="log-toggle-button" type="button" (click)="toggleLogging()">
+        <ion-icon name="add-outline"></ion-icon>
+        Registrar Entrenamiento
+      </button>
+    } @else {
+      <!-- Formulario para Registrar Entrenamiento (RF06) -->
+      <form class="workout-form" (ngSubmit)="saveWorkout()">
+        <h2>Registrar Entrenamiento</h2>
+
+        <div class="field-group">
+          <label for="routineSelect">Seleccionar rutina <span class="required">*</span></label>
+          <select id="routineSelect" name="selectedRoutineId" [(ngModel)]="selectedRoutineId">
+            <option value="">-- Otro / Ejercicio Libre --</option>
+            @for (routine of routines(); track routine.id) {
+              <option [value]="routine.id">{{ routine.name }}</option>
+            }
+          </select>
+        </div>
+
+        @if (!selectedRoutineId || selectedRoutineId === '') {
+          <div class="field-group">
+            <label for="customName">Nombre del entrenamiento/ejercicio <span class="required">*</span></label>
+            <input
+              id="customName"
+              name="customRoutineName"
+              type="text"
+              placeholder="Ej: Cardio, Pecho y Tríceps"
+              [(ngModel)]="customRoutineName"
+              required
+            />
+          </div>
+        }
+
+        <div class="row-fields">
+          <div class="field-group">
+            <label for="duration">Duración (min) <span class="required">*</span></label>
+            <input
+              id="duration"
+              name="durationMin"
+              type="number"
+              placeholder="Ej: 45"
+              [(ngModel)]="durationMin"
+              min="1"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="loggedDate">Fecha <span class="required">*</span></label>
+            <input
+              id="loggedDate"
+              name="loggedAt"
+              type="date"
+              [(ngModel)]="loggedAt"
+              required
+            />
+          </div>
+        </div>
+
+        @if (error()) {
+          <p class="form-error">{{ error() }}</p>
+        }
+
+        <div class="form-actions">
+          <button class="save-button" type="submit" [disabled]="loading()">
+            <ion-icon name="save-outline"></ion-icon>
+            {{ loading() ? 'Registrando...' : 'Registrar' }}
+          </button>
+          <button class="cancel-button" type="button" (click)="toggleLogging()" [disabled]="loading()">
+            <ion-icon name="close-outline"></ion-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    }
+
+    <!-- Historial de Entrenamientos (RF07) -->
+    <section class="workout-history">
+      <h2>Historial de Actividad</h2>
+      
+      <div class="history-list">
+        @for (workout of workouts(); track workout.id) {
+          <article class="workout-card">
+            <div class="workout-icon">
+              <ion-icon name="barbell-outline"></ion-icon>
+            </div>
+            
+            <div class="workout-info">
+              <span class="workout-name">{{ workout.routineName }}</span>
+              <span class="workout-meta">
+                <ion-icon name="time-outline"></ion-icon>
+                {{ workout.durationMin }} min
+                <span class="dot">·</span>
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ formatDate(workout.loggedAt) }}
+              </span>
+            </div>
+
+            <button class="workout-delete" type="button" aria-label="Eliminar registro" (click)="deleteWorkout(workout.id)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </article>
+        } @empty {
+          <div class="history-empty">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+            <p>No tienes entrenamientos registrados aún.</p>
+            <span class="empty-hint">Usa el botón de arriba para registrar tu primera sesión.</span>
+          </div>
+        }
+      </div>
+    </section>
+
   </main>
 </ion-content>
+
