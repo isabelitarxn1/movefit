@@ -147,6 +147,18 @@ export class DatabaseService {
         loggedAt      TEXT    NOT NULL,
         FOREIGN KEY (userId) REFERENCES users(id)
       );
+
+      CREATE TABLE IF NOT EXISTS reminders (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId        INTEGER NOT NULL,
+        title         TEXT    NOT NULL,
+        message       TEXT    NOT NULL,
+        time          TEXT    NOT NULL,
+        days          TEXT    NOT NULL,
+        enabled       INTEGER NOT NULL DEFAULT 1,
+        createdAt     TEXT    NOT NULL,
+        FOREIGN KEY (userId) REFERENCES users(id)
+      );
     `;
     await this.getConnection().execute(schema);
 
