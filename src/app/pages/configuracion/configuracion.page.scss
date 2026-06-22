@@ -1,0 +1,426 @@
+.config-page {
+  --background: #2c2d29;
+}
+
+.config-container {
+  min-height: 100%;
+  padding: 32px 16px 24px;
+  background: #2c2d29;
+  color: #ffffff;
+}
+
+.config-header {
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .config-subtitle {
+    margin: 0;
+    color: #aaaea6;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+/* Tarjeta de estado del permiso */
+.permission-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #1f201e;
+  border: 1px solid #555852;
+  margin-bottom: 24px;
+
+  &.granted {
+    border-color: #00a859;
+  }
+}
+
+.permission-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(0, 168, 89, 0.15);
+  color: #00a859;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.permission-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+
+  .permission-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .permission-desc {
+    font-size: 11px;
+    color: #aaaea6;
+    line-height: 1.3;
+  }
+}
+
+.permission-button {
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: #00a859;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Botón añadir recordatorio */
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  margin-bottom: 28px;
+  border: 1px solid #00a859;
+  border-radius: 8px;
+  background: transparent;
+  color: #00a859;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+/* Formulario de recordatorio */
+.reminder-form {
+  display: flex;
+  flex-direction: column;
+  background: #1f201e;
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin-bottom: 28px;
+
+  h2 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: 1px solid #2c2d29;
+    padding-bottom: 10px;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  label {
+    margin-bottom: 5px;
+    color: #aaaea6;
+    font-size: 11px;
+  }
+
+  label .required {
+    color: #00a859;
+  }
+
+  input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #555852;
+    border-radius: 6px;
+    background: #2c2d29;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #00a859;
+    }
+  }
+}
+
+.day-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.day-chip {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #555852;
+  border-radius: 50%;
+  background: transparent;
+  color: #b8bbb4;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &.active {
+    border-color: #00a859;
+    background: #00a859;
+    color: #ffffff;
+  }
+}
+
+.enabled-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 12px;
+  color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: #00a859;
+    cursor: pointer;
+  }
+}
+
+.form-error {
+  margin: 0 0 12px;
+  color: #ff6b6b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+
+  button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    ion-icon {
+      font-size: 16px;
+    }
+  }
+
+  .save-button {
+    background: #00a859;
+    color: #ffffff;
+    border: none;
+  }
+
+  .cancel-button {
+    background: transparent;
+    border: 1px solid #555852;
+    color: #ffffff;
+  }
+}
+
+/* Lista de recordatorios */
+.reminder-list-section {
+  h2 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #aaaea6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reminder-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #1f201e;
+  transition: opacity 0.2s ease;
+
+  &.disabled {
+    opacity: 0.55;
+  }
+}
+
+.reminder-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(0, 168, 89, 0.15);
+  color: #00a859;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.reminder-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.reminder-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reminder-message {
+  font-size: 12px;
+  color: #b8bbb4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reminder-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #aaaea6;
+  font-size: 11px;
+
+  ion-icon {
+    font-size: 12px;
+  }
+
+  .dot {
+    color: #555852;
+  }
+}
+
+.reminder-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.reminder-power,
+.reminder-edit,
+.reminder-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.reminder-power {
+  border: 1px solid #555852;
+  color: #aaaea6;
+
+  &.on {
+    border-color: #00a859;
+    color: #00a859;
+  }
+}
+
+.reminder-edit {
+  border: 1px solid #555852;
+  color: #ffffff;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.reminder-delete {
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+
+  &:hover {
+    background: rgba(255, 107, 107, 0.1);
+  }
+}
+
+.list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  text-align: center;
+  border-radius: 12px;
+  background: #1f201e;
+  border: 1px dashed #555852;
+
+  ion-icon {
+    font-size: 44px;
+    color: #555852;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin: 0 0 4px;
+    color: #ffffff;
+    font-size: 13px;
+  }
+
+  .empty-hint {
+    color: #8d9089;
+    font-size: 11px;
+  }
+}

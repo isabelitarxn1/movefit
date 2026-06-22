@@ -1,6 +1,163 @@
-<ion-content class="placeholder-page">
-  <main class="placeholder-container">
-    <h1>Configuración</h1>
-    <p>Aquí podrás ajustar tus recordatorios y notificaciones de entrenamiento. Próximamente.</p>
+<ion-content class="config-page">
+  <main class="config-container">
+
+    <header class="config-header">
+      <h1>Ajustes</h1>
+      <p class="config-subtitle">Configura recordatorios para mantener la constancia en tus rutinas</p>
+    </header>
+
+    <!-- Estado del permiso de notificaciones (RF08) -->
+    <section class="permission-card" [class.granted]="permissionGranted()">
+      <div class="permission-icon">
+        <ion-icon [name]="permissionGranted() ? 'notifications-outline' : 'notifications-off-outline'"></ion-icon>
+      </div>
+      <div class="permission-info">
+        <span class="permission-title">
+          {{ permissionGranted() ? 'Notificaciones activadas' : 'Notificaciones desactivadas' }}
+        </span>
+        <span class="permission-desc">
+          {{ permissionGranted()
+            ? 'Recibirás tus recordatorios a la hora programada.'
+            : 'Activa los permisos para recibir tus recordatorios.' }}
+        </span>
+      </div>
+      @if (!permissionGranted()) {
+        <button class="permission-button" type="button" (click)="enableNotifications()">
+          Activar
+        </button>
+      }
+    </section>
+
+    <!-- Botón para crear recordatorio (RF08) -->
+    @if (!isFormOpen()) {
+      <button class="add-button" type="button" (click)="openCreateForm()">
+        <ion-icon name="add-outline"></ion-icon>
+        Nuevo recordatorio
+      </button>
+    } @else {
+      <!-- Formulario de crear/editar recordatorio -->
+      <form class="reminder-form" (ngSubmit)="saveReminder()">
+        <h2>{{ editingId() ? 'Editar recordatorio' : 'Nuevo recordatorio' }}</h2>
+
+        <div class="field-group">
+          <label for="title">Título <span class="required">*</span></label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            placeholder="Ej: ¡Hora de entrenar!"
+            [(ngModel)]="title"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="message">Mensaje</label>
+          <input
+            id="message"
+            name="message"
+            type="text"
+            placeholder="Ej: No olvides tu rutina de pierna"
+            [(ngModel)]="message"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="time">Hora <span class="required">*</span></label>
+          <input id="time" name="time" type="time" [(ngModel)]="time" required />
+        </div>
+
+        <div class="field-group">
+          <label>Días de la semana <span class="required">*</span></label>
+          <div class="day-picker">
+            @for (day of days; track day.code) {
+              <button
+                type="button"
+                class="day-chip"
+                [class.active]="isDaySelected(day.code)"
+                (click)="toggleDay(day.code)"
+                [attr.aria-label]="day.label"
+              >
+                {{ day.short }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <label class="enabled-toggle">
+          <input type="checkbox" name="enabled" [(ngModel)]="enabled" />
+          <span>Activar este recordatorio</span>
+        </label>
+
+        @if (error()) {
+          <p class="form-error">{{ error() }}</p>
+        }
+
+        <div class="form-actions">
+          <button class="save-button" type="submit" [disabled]="loading()">
+            <ion-icon name="save-outline"></ion-icon>
+            {{ loading() ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button class="cancel-button" type="button" (click)="closeForm()" [disabled]="loading()">
+            <ion-icon name="close-outline"></ion-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    }
+
+    <!-- Lista de recordatorios (RF08) -->
+    <section class="reminder-list-section">
+      <h2>Mis recordatorios</h2>
+
+      <div class="reminder-list">
+        @for (reminder of reminders(); track reminder.id) {
+          <article class="reminder-card" [class.disabled]="!reminder.enabled">
+            <div class="reminder-icon">
+              <ion-icon name="alarm-outline"></ion-icon>
+            </div>
+
+            <div class="reminder-info">
+              <span class="reminder-title">{{ reminder.title }}</span>
+              @if (reminder.message) {
+                <span class="reminder-message">{{ reminder.message }}</span>
+              }
+              <span class="reminder-meta">
+                <ion-icon name="time-outline"></ion-icon>
+                {{ reminder.time }}
+                <span class="dot">·</span>
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ formatDays(reminder.days) }}
+              </span>
+            </div>
+
+            <div class="reminder-actions">
+              <button
+                class="reminder-power"
+                [class.on]="reminder.enabled"
+                type="button"
+                [attr.aria-label]="reminder.enabled ? 'Desactivar' : 'Activar'"
+                (click)="toggleReminderEnabled(reminder)"
+              >
+                <ion-icon [name]="reminder.enabled ? 'notifications-outline' : 'notifications-off-outline'"></ion-icon>
+              </button>
+              <button class="reminder-edit" type="button" aria-label="Editar" (click)="openEditForm(reminder)">
+                <ion-icon name="create-outline"></ion-icon>
+              </button>
+              <button class="reminder-delete" type="button" aria-label="Eliminar" (click)="deleteReminder(reminder)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <div class="list-empty">
+            <ion-icon name="notifications-off-outline"></ion-icon>
+            <p>No tienes recordatorios configurados.</p>
+            <span class="empty-hint">Crea uno para que la app te recuerde entrenar.</span>
+          </div>
+        }
+      </div>
+    </section>
+
   </main>
 </ion-content>
